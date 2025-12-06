@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: trading_backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - ./backend/demo.db:/app/demo.db
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "sqlite:///./demo.db"
+      FXBLUE_BASE_URL: "http://backend:8000/fxblue"
+    networks:
+      - trading_net
+
+  frontend:
+    build:
+      context: .  # Change from ./frontend to .
+      dockerfile: ./frontend/Dockerfile  # Specify the Dockerfile path
+    container_name: trading_frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: "http://backend:8000"
+    networks:
+      - trading_net
+    depends_on:
+      - backend
+
+networks:
+  trading_net:
+    driver: bridge
