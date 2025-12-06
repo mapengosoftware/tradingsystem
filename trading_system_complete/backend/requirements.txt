@@ -1,9 +1,0 @@
-fastapi
-uvicorn[standard]
-httpx
-sqlalchemy
-databases
-pydantic
-python-dotenv
-langdetect
-Jinja2
